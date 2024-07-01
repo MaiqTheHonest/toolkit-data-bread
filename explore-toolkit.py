@@ -63,7 +63,7 @@ def lm(dataframe, model, plot = False):
 
     print(clean_eq)
 
-    
+    #plt.show()
     if plot==False:
         plt.close()
 
