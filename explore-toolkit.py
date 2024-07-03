@@ -69,4 +69,137 @@ def lm(dataframe, model, plot = False):
 
 
 
+def logit(dataframe, x_variable, y_variable, plot=False):
 
+    x_var = dataframe[x_variable].astype(float)
+    y_var = dataframe[y_variable].astype(int)   
+    OrderedID = np.argsort(x_var)
+    x_var = np.array(x_var)[OrderedID]
+    
+
+
+    scaler = preprocessing.StandardScaler()
+ 
+    x_var_scaled = scaler.fit_transform(x_var.reshape(-1, 1))
+    
+    
+    
+
+    logit_model = linear_model.LogisticRegression()
+    logit_reg = logit_model.fit(x_var_scaled, y_var)
+    logit_coef = np.array_str(logit_reg.coef_.round(decimals=5)).strip("[ ]")
+    logit_intercept = np.array_str(logit_reg.intercept_.round(decimals=5)).strip("[ ]")
+
+
+    fig3 = plt.figure(3)
+    
+    plt.scatter(x_var, y_var, c='black')
+    plt.plot(x_var, 1/(1+np.exp(-x_var * np.ravel(logit_reg.coef_)-(logit_reg.intercept_))))
+    
+    TeXclean_eq = r"$log(\frac{p}{1 - p})$ = "+f"{logit_intercept} + ({logit_coef})*{x_variable}"
+    clean_eq = "log(p/(1-p)) = "+f"{logit_intercept} + ({logit_coef})*{x_variable}"
+    plt.xlabel(f"{x_variable}")
+    plt.ylabel(f"p = p({y_variable})")
+    plt.title(TeXclean_eq)
+
+
+    if plot==False:
+        plt.close()
+    
+    print(clean_eq)
+    
+    
+
+#logit(df, 'SibSp', 'Survived', False)
+
+
+
+def logit(dataframe, model, plot = False):
+
+    model=model.split('~')
+
+    y_variable = model[0].strip()
+    x_variables = model[1]
+    x_variables = [x.strip() for x in x_variables.split('+')]
+
+    X = dataframe[x_variables]
+    P = np.array(dataframe[y_variable])
+
+    if ((P==0) | (P==1)).all() == False:
+        binary_indicator = False
+    # if any 0 or 1 values of explained var are present, change them to the closest possible to 0 or 1
+        P[P == 0]=np.min(P[P != 0])  
+        P[P == 1]=np.max(P[P != 1])
+
+        Y = np.log(P / (1 - P))  # format explained var to linear form
+
+        lin_model = linear_model.LinearRegression()
+        logit_model = lin_model.fit(X, Y)
+        lin_slope = logit_model.coef_
+        lin_intercept = logit_model.intercept_
+    else:
+        binary_indicator = True
+        lin_model = linear_model.LogisticRegression()
+        Y = P
+        logit_model = lin_model.fit(X, Y)
+        lin_slope = logit_model.coef_[0]
+        lin_intercept = logit_model.intercept_[0]
+
+    clean_eq = f"log(p/(1 - p) = {lin_intercept.round(decimals=5)}"
+    TeXclean_eq = r"$log(\frac{p}{1 - p})$ =" + f"{lin_intercept.round(decimals=5)}"
+
+    for idx, x in enumerate(x_variables):  
+        clean_eq = str(clean_eq) + f" + {lin_slope[idx].round(decimals=5)}*{x_variables[idx]}"
+        TeXclean_eq = str(TeXclean_eq)+ f" + {lin_slope[idx].round(decimals=5)}*{x_variables[idx]}"
+
+    if len(x_variables) > 2:
+        print('4D+ not plottable')
+
+    elif len(x_variables) == 2:
+     
+        fig1 = plt.figure(figsize=(5,5))
+        ax = fig1.add_subplot(111, projection='3d')
+        ax.scatter3D(X.iloc[:,0], X.iloc[:,1], P)
+        ax.set_xlabel(x_variables[0], fontweight ='bold') 
+        ax.set_ylabel(x_variables[1], fontweight ='bold') 
+        ax.set_zlabel(f"{y_variable} (p)", fontweight ='bold', rotation=90)
+        ax.zaxis.labelpad=-0.5
+    
+        x_plane = np.array(X.iloc[:,0])
+        y_plane = np.array(X.iloc[:,1])
+        
+        xi = np.linspace(min(x_plane), max(x_plane))  # necessary transformation for correct gradient plotting
+        yi = np.linspace(min(y_plane), max(y_plane))
+
+        x_plane, y_plane = np.meshgrid(xi, yi)
+        z_plane = 1/(1+np.exp(-x_plane * np.ravel(lin_slope[0])-y_plane * np.ravel(lin_slope[1])-(lin_intercept)))
+        
+        ax.plot_surface(x_plane, y_plane, z_plane, rstride=1, cstride=1, linewidth=1, vmin=0, vmax=1.1, cmap=cm.magma)
+        
+        ax.set_title(TeXclean_eq)
+        
+    else:
+
+        fig1 = plt.figure()
+        plt.scatter(X, P, color="black")
+        S = 1/(1+np.exp(-X * np.ravel(logit_model.coef_)-(logit_model.intercept_)))
+
+        # convert to arrays and sort so matplotlib plots correctly
+        X = np.array(X)
+        S = np.array(S)
+        X, S = zip(*sorted(zip(X, S)))
+
+        plt.plot(X, S)
+        plt.xlabel(f"{x_variables[0]} (p)")
+        plt.ylabel(y_variable)
+        plt.title(TeXclean_eq)
+
+    print(clean_eq)
+
+    #plt.show()
+    if plot==False:
+        plt.close()
+
+
+
+#lg(df, 'Survived ~ SibSp + Fare', plot=True)
