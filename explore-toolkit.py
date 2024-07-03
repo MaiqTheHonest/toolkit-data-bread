@@ -69,48 +69,6 @@ def lm(dataframe, model, plot = False):
 
 
 
-def logit(dataframe, x_variable, y_variable, plot=False):
-
-    x_var = dataframe[x_variable].astype(float)
-    y_var = dataframe[y_variable].astype(int)   
-    OrderedID = np.argsort(x_var)
-    x_var = np.array(x_var)[OrderedID]
-    
-
-
-    scaler = preprocessing.StandardScaler()
- 
-    x_var_scaled = scaler.fit_transform(x_var.reshape(-1, 1))
-    
-    
-    
-
-    logit_model = linear_model.LogisticRegression()
-    logit_reg = logit_model.fit(x_var_scaled, y_var)
-    logit_coef = np.array_str(logit_reg.coef_.round(decimals=5)).strip("[ ]")
-    logit_intercept = np.array_str(logit_reg.intercept_.round(decimals=5)).strip("[ ]")
-
-
-    fig3 = plt.figure(3)
-    
-    plt.scatter(x_var, y_var, c='black')
-    plt.plot(x_var, 1/(1+np.exp(-x_var * np.ravel(logit_reg.coef_)-(logit_reg.intercept_))))
-    
-    TeXclean_eq = r"$log(\frac{p}{1 - p})$ = "+f"{logit_intercept} + ({logit_coef})*{x_variable}"
-    clean_eq = "log(p/(1-p)) = "+f"{logit_intercept} + ({logit_coef})*{x_variable}"
-    plt.xlabel(f"{x_variable}")
-    plt.ylabel(f"p = p({y_variable})")
-    plt.title(TeXclean_eq)
-
-
-    if plot==False:
-        plt.close()
-    
-    print(clean_eq)
-    
-    
-
-#logit(df, 'SibSp', 'Survived', False)
 
 
 
