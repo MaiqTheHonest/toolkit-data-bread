@@ -68,3 +68,5 @@ def lm(dataframe, model, plot = False):
         plt.close()
 
 
+
+
