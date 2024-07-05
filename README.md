@@ -10,7 +10,7 @@ Example usage: <br />
 ## Linear regression:
 
 ```python
-from explore-toolkit import lm 
+from explore_toolkit import lm 
 df = pd.read_csv("titanic.csv") 
 df = df.fillna({'Age': df['Age'].median()})
 ``` 
