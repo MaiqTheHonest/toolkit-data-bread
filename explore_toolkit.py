@@ -83,7 +83,7 @@ def lm(dataframe, model, plot = False):
 
 
 def logit(dataframe, model, plot = False):
-
+    from matplotlib import cm
     y_variable, x_variables = unpack(model) 
 
     X = dataframe[x_variables]
