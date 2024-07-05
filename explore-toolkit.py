@@ -8,17 +8,24 @@ import matplotlib
 import matplotlib.pyplot as plt
 #%matplotlib inline
 #matplotlib.use('Qt5Agg')     #  use this to make plots NOT in-line
+df = pd.read_csv('titanic.csv')
+
+
+def unpack(model):
+    
+    model = model.split('~')
+    y_variable = model[0].strip()
+    x_variables = model[1]
+    x_variables = [x.strip() for x in x_variables.split('+')]
+    
+    return y_variable, x_variables   
 
 
 
 def lm(dataframe, model, plot = False):
 
     lin_model = linear_model.LinearRegression()
-    model=model.split('~')
-    
-    y_variable = model[0].strip()
-    x_variables = model[1]
-    x_variables = [x.strip() for x in x_variables.split('+')]
+    y_variable, x_variables = unpack(model) 
 
     X = dataframe[x_variables]
     Y = dataframe[y_variable]
@@ -74,11 +81,7 @@ def lm(dataframe, model, plot = False):
 
 def logit(dataframe, model, plot = False):
 
-    model=model.split('~')
-
-    y_variable = model[0].strip()
-    x_variables = model[1]
-    x_variables = [x.strip() for x in x_variables.split('+')]
+    y_variable, x_variables = unpack(model) 
 
     X = dataframe[x_variables]
     P = np.array(dataframe[y_variable])
@@ -160,4 +163,4 @@ def logit(dataframe, model, plot = False):
 
 
 
-#lg(df, 'Survived ~ SibSp + Fare', plot=True)
+logit(df, 'Survived ~ SibSp + Fare', plot=True)
