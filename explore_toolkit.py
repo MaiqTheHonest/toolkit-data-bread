@@ -6,6 +6,9 @@ import pandas as pd
 from sklearn import datasets, linear_model, preprocessing
 import matplotlib
 import matplotlib.pyplot as plt
+from matplotlib import cm, colors
+from mpl_toolkits import mplot3d
+from mpl_toolkits.mplot3d import Axes3D
 #%matplotlib inline
 #matplotlib.use('Qt5Agg')     #  use this to make plots NOT in-line
 #df = pd.read_csv('titanic.csv')
