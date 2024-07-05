@@ -8,7 +8,7 @@ import matplotlib
 import matplotlib.pyplot as plt
 #%matplotlib inline
 #matplotlib.use('Qt5Agg')     #  use this to make plots NOT in-line
-df = pd.read_csv('titanic.csv')
+#df = pd.read_csv('titanic.csv')
 
 
 def unpack(model):
@@ -163,4 +163,4 @@ def logit(dataframe, model, plot = False):
 
 
 
-logit(df, 'Survived ~ SibSp + Fare', plot=True)
+#logit(df, 'Survived ~ SibSp + Fare', plot=True)
