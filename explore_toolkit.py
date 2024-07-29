@@ -4,8 +4,10 @@ import time
 import numpy as np
 import pandas as pd
 from sklearn import datasets, linear_model, preprocessing
+from sklearn.cluster import KMeans
 import matplotlib
 import matplotlib.pyplot as plt
+import plotly.graph_objects as go
 from matplotlib import cm, colors
 from mpl_toolkits import mplot3d
 from mpl_toolkits.mplot3d import Axes3D
@@ -138,7 +140,7 @@ def logit(dataframe, model, plot = False):
         x_plane, y_plane = np.meshgrid(xi, yi)
         z_plane = 1/(1+np.exp(-x_plane * np.ravel(lin_slope[0])-y_plane * np.ravel(lin_slope[1])-(lin_intercept)))
         
-        ax.plot_surface(x_plane, y_plane, z_plane, rstride=1, cstride=1, linewidth=1, vmin=0, vmax=1.1, cmap=cm.magma)
+        ax.plot_surface(x_plane, y_plane, z_plane, rstride=1, cstride=1, linewidth=1, vmin=0, vmax=1.1, cmap=matplotlib.cm.magma)
         
         ax.set_title(TeXclean_eq)
         
@@ -164,6 +166,124 @@ def logit(dataframe, model, plot = False):
     if plot==False:
         plt.close()
 
-
-
 #logit(df, 'Survived ~ SibSp + Fare', plot=True)
+
+
+
+
+
+def elbow(dataframe, variables):
+
+    X = dataframe[variables]
+
+    inertias = []
+
+    for i in range(1,11):
+        kmeans = KMeans(n_clusters = i)
+        kmeans.fit(X)
+        inertias.append(kmeans.inertia_)
+
+    plt.figure(1)
+    
+    plt.plot(range(1,11), inertias, marker='o')
+    plt.title('Elbow method')
+    plt.xlabel('Number of clusters')
+    plt.ylabel('Inertia')
+
+# elbow(df, ['sniperKillsPC', 'rifleKillsPC', 'winrate'])
+
+
+
+
+
+def kmeansclusters(dataframe, variables, n_clusters, plot=True, append=False, spit=False):
+
+    
+    X = dataframe[variables]
+    kmeans = KMeans(n_clusters=n_clusters)  # set n_clusters based on elbow from above
+    cluster_model_2k = kmeans.fit(X)
+    latest_cluster = cluster_model_2k.labels_
+    dataframe.insert(1, 'latest_cluster', latest_cluster)
+
+    color = iter(matplotlib.colormaps['jet'](np.linspace(0, 1, n_clusters)))
+    to_hex = lambda a : 'rgba({:.0f},{:.0f},{:.0f},{:.2f})'.format(a[0]*255, a[1]*255, a[2]*255, a[3])
+
+
+    PLOT = go.Figure()
+
+    plot_params = {'mode' : 'markers', 
+                   'marker_size' : 5, 
+                   'marker_line_width' : 1
+                   }
+    
+    if len(variables) == 1:
+
+        dataframe['dummy'] = 0
+
+        for i in range(0, n_clusters):
+            
+            cn_hex = to_hex(next(color))
+            
+            PLOT.add_trace(go.Scatter(x = dataframe.loc[dataframe['latest_cluster'] == i, variables[0]],
+                                      y = dataframe['dummy'],
+                                      marker = dict(color = cn_hex),
+                                      name = f'Cluster {i}',
+                                      **plot_params
+                                      ))
+            
+            PLOT.update_layout(width = 850, height = 800, autosize = True, showlegend = True,
+                                xaxis=dict(title = variables[0], titlefont_color = 'black'))
+        
+        dataframe.drop(["dummy"], axis=1)
+
+    if len(variables) == 2:
+        # a one-liner from seaborne: facet = sns.lmplot(dataframe, x=variables[0], y=variables[1], hue='latest_cluster', fit_reg=False, legend=True)
+        for i in range(0, n_clusters):
+            
+            cn_hex = to_hex(next(color))
+
+            PLOT.add_trace(go.Scatter(x = dataframe.loc[dataframe['latest_cluster'] == i, variables[0]],
+                                      y = dataframe.loc[dataframe['latest_cluster'] == i, variables[1]],
+                                      marker = dict(color = cn_hex),
+                                      name = f'Cluster {i}',
+                                      **plot_params
+                                      ))
+            
+        PLOT.update_layout(width = 850, height = 800, autosize = True, showlegend = True,
+                                xaxis=dict(title = variables[0], titlefont_color = 'black'),
+                                yaxis=dict(title = variables[1], titlefont_color = 'black'))
+
+
+    if len(variables) == 3:
+        
+        for i in range(0, n_clusters):
+
+            cn_hex = to_hex(next(color))
+
+            PLOT.add_trace(go.Scatter3d(x = dataframe.loc[dataframe['latest_cluster'] == i, variables[0]],
+                                        y = dataframe.loc[dataframe['latest_cluster'] == i, variables[1]],
+                                        z = dataframe.loc[dataframe['latest_cluster'] == i, variables[2]],
+                                        name = f'Cluster {i}',
+                                        marker = dict(color = cn_hex),
+                                        **plot_params))
+            
+        PLOT.update_layout(width = 800, height = 800, autosize = True, showlegend = True,
+                            scene = dict(xaxis=dict(title = variables[0], titlefont_color = 'black'),
+                                        yaxis=dict(title = variables[1], titlefont_color = 'black'),
+                                        zaxis=dict(title = variables[2], titlefont_color = 'black')),
+                                        scene_aspectmode='cube',
+                                        font = dict(family = "Gilroy", color  = 'black', size = 12),
+                                        scene_camera = dict(eye=dict(x=1.5, y=1.5, z=1)))
+        
+
+    if plot == True:
+        PLOT.show()
+    
+    if spit == True:
+        return dataframe['latest_cluster']
+
+    if append == False: 
+        dataframe.drop(["latest_cluster"], axis=1, inplace=True) # mind the inplace
+    
+
+# a = kmeansclusters(df, ['sniperKillsPC', 'winrate'], n_clusters=8, append=False, spit=True, plot=True)
