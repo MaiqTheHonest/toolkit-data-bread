@@ -212,8 +212,8 @@ def kmeansclusters(dataframe, variables, n_clusters, plot=True, append=False, sp
     PLOT = go.Figure()
 
     plot_params = {'mode' : 'markers', 
-                   'marker_size' : 5, 
-                   'marker_line_width' : 1
+                   'marker_size' : 7, 
+                   'marker_line_width' : 0
                    }
     
     if len(variables) == 1:
@@ -228,7 +228,9 @@ def kmeansclusters(dataframe, variables, n_clusters, plot=True, append=False, sp
                                       y = dataframe['dummy'],
                                       marker = dict(color = cn_hex),
                                       name = f'Cluster {i}',
-                                      **plot_params
+                                      mode = 'markers',
+                                      marker_size = 7,
+                                      marker_line_width = 0.25
                                       ))
             
             PLOT.update_layout(width = 850, height = 800, autosize = True, showlegend = True,
@@ -265,7 +267,9 @@ def kmeansclusters(dataframe, variables, n_clusters, plot=True, append=False, sp
                                         z = dataframe.loc[dataframe['latest_cluster'] == i, variables[2]],
                                         name = f'Cluster {i}',
                                         marker = dict(color = cn_hex),
-                                        **plot_params))
+                                        mode = 'markers',
+                                        marker_size = 5,
+                                        marker_line_width = 1))
             
         PLOT.update_layout(width = 800, height = 800, autosize = True, showlegend = True,
                             scene = dict(xaxis=dict(title = variables[0], titlefont_color = 'black'),
