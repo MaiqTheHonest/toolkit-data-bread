@@ -25,7 +25,11 @@ lm(df, 'Fare ~ Age + SibSp', plot=True)
 
 2D | 3D
 :-------------------------:|:-------------------------:
-![image](https://github.com/MaiqTheHonest/toolkit-data-bread/assets/60844551/68580914-a759-4841-b745-b8a9d58e5f5f) |  ![image](https://github.com/MaiqTheHonest/toolkit-data-bread/assets/60844551/fcde0a0e-89c3-4a2d-a334-369a547b2729)
+![image](https://github.com/user-attachments/assets/bd603e03-14a7-4a49-a9f6-a02493cb0ca3)  |  ![image](https://github.com/user-attachments/assets/7f195e3d-19a6-42dd-a11c-b0c446471570)
+
+
+
+
 
 
 ## Logistic regression (for binary and proportional predictors):
@@ -45,7 +49,7 @@ logit(td, 'propsurv ~ density + surv', plot=True)
 
 2D | 3D
 :-------------------------:|:-------------------------:
-![image](https://github.com/MaiqTheHonest/toolkit-data-bread/assets/60844551/40f73790-2a78-4d7c-bf9d-872c15321a1c)  |  ![image](https://github.com/MaiqTheHonest/toolkit-data-bread/assets/60844551/8b728f55-416a-41ad-9ac0-fe7d0a86c4f7)
+![image](https://github.com/user-attachments/assets/52a2e7e5-24a4-4d9b-ac81-167623d82448)  |  ![image](https://github.com/MaiqTheHonest/toolkit-data-bread/assets/60844551/8b728f55-416a-41ad-9ac0-fe7d0a86c4f7)
 
 
 ## k-means clustering and the "elbow" rule:
