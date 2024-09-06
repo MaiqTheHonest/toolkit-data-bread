@@ -53,7 +53,7 @@ def lm(dataframe, model, plot = False):
      
         fig1 = plt.figure(figsize=(5,5))
         ax = fig1.add_subplot(111, projection='3d')
-        ax.scatter3D(X.iloc[:,0], X.iloc[:,1], Y)
+        ax.scatter3D(X.iloc[:,0], X.iloc[:,1], Y, s=12)
         ax.set_xlabel(x_variables[0], fontweight ='bold') 
         ax.set_ylabel(x_variables[1], fontweight ='bold') 
         ax.set_zlabel(y_variable, fontweight ='bold', rotation=90)
@@ -67,8 +67,8 @@ def lm(dataframe, model, plot = False):
     else:
 
         fig1 = plt.figure()
-        plt.scatter(X.iloc[:,0], Y, color="black")
-        plt.plot(X, lin_intercept+lin_slope*X, c='red')  # plot equation of line
+        plt.scatter(X.iloc[:,0], Y, s=10)
+        plt.plot(X, lin_intercept+lin_slope*X, c='black')  # plot equation of line
         plt.xlabel(x_variables[0])
         plt.ylabel(y_variable)
         plt.title(clean_eq)
