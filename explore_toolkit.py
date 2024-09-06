@@ -147,7 +147,7 @@ def logit(dataframe, model, plot = False):
     else:
 
         fig1 = plt.figure()
-        plt.scatter(X, P, color="black")
+        plt.scatter(X, P, s=12)
         S = 1/(1+np.exp(-X * np.ravel(logit_model.coef_)-(logit_model.intercept_)))
 
         # convert to arrays and sort so matplotlib plots correctly
@@ -155,7 +155,7 @@ def logit(dataframe, model, plot = False):
         S = np.array(S)
         X, S = zip(*sorted(zip(X, S)))
 
-        plt.plot(X, S)
+        plt.plot(X, S, c="black")
         plt.xlabel(f"{x_variables[0]} (p)")
         plt.ylabel(y_variable)
         plt.title(TeXclean_eq)
