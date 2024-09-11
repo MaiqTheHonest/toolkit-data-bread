@@ -212,7 +212,7 @@ def kmeansclusters(dataframe, variables, n_clusters, plot=True, append=False, sp
     PLOT = go.Figure()
 
     plot_params = {'mode' : 'markers', 
-                   'marker_size' : 9, 
+                   'marker_size' : 11, 
                    'marker_line_width' : 0.4
                    }
     
