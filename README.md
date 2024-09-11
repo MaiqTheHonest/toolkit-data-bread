@@ -82,7 +82,11 @@ kmeansclusters(df, ['SepalLengthCm', 'SepalWidthCm', 'PetalWidthCm'], n_clusters
 
 2D | 3D
 :-------------------------:|:-------------------------:
-![image](https://github.com/user-attachments/assets/7d92e4aa-90cb-45c8-b5f7-f12836e65f4c)  |  ![image](https://github.com/user-attachments/assets/c33b47f4-febe-47e8-b62b-a7bf087ce9f3)
+![image](https://github.com/user-attachments/assets/7ca6263f-fbf5-439d-8d70-ef253545d985)  |  ![image](https://github.com/user-attachments/assets/7188134a-1f9d-429a-809e-39ce14bac240)
+
+
+
+
 
 
 Use `spit = True` to return the standalone column of cluster numbers and use `append = True` to insert the column of cluster numbers into the analysed dataframe (position 1)
