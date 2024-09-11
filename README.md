@@ -82,7 +82,7 @@ kmeansclusters(df, ['SepalLengthCm', 'SepalWidthCm', 'PetalWidthCm'], n_clusters
 
 2D | 3D
 :-------------------------:|:-------------------------:
-![image](https://github.com/user-attachments/assets/7ca6263f-fbf5-439d-8d70-ef253545d985)  |  ![image](https://github.com/user-attachments/assets/7188134a-1f9d-429a-809e-39ce14bac240)
+![image](https://github.com/user-attachments/assets/41c12ef5-155f-46be-aa62-c3fbd80dc6aa)  |  ![image](https://github.com/user-attachments/assets/7188134a-1f9d-429a-809e-39ce14bac240)
 
 
 
