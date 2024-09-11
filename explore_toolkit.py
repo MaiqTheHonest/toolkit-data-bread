@@ -205,15 +205,15 @@ def kmeansclusters(dataframe, variables, n_clusters, plot=True, append=False, sp
     latest_cluster = cluster_model_2k.labels_
     dataframe.insert(1, 'latest_cluster', latest_cluster)
 
-    color = iter(matplotlib.colormaps['jet'](np.linspace(0, 1, n_clusters)))
+    color = iter(matplotlib.colormaps['Dark2'](np.linspace(0, n_clusters / 8, n_clusters)))
     to_hex = lambda a : 'rgba({:.0f},{:.0f},{:.0f},{:.2f})'.format(a[0]*255, a[1]*255, a[2]*255, a[3])
 
 
     PLOT = go.Figure()
 
     plot_params = {'mode' : 'markers', 
-                   'marker_size' : 7, 
-                   'marker_line_width' : 0
+                   'marker_size' : 9, 
+                   'marker_line_width' : 0.4
                    }
     
     if len(variables) == 1:
