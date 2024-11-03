@@ -190,7 +190,7 @@ def elbow(dataframe, variables):
     plt.xlabel('Number of clusters')
     plt.ylabel('Inertia')
 
-# elbow(df, ['sniperKillsPC', 'rifleKillsPC', 'winrate'])
+# elbow(df, ['Fare', 'SibSp', 'Survived'])
 
 
 
@@ -289,5 +289,3 @@ def kmeansclusters(dataframe, variables, n_clusters, plot=True, append=False, sp
     if append == False: 
         dataframe.drop(["latest_cluster"], axis=1, inplace=True) # mind the inplace
     
-
-# a = kmeansclusters(df, ['sniperKillsPC', 'winrate'], n_clusters=8, append=False, spit=True, plot=True)
